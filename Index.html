@@ -1,155 +1,195 @@
 <html>
+
 <head>
-	<title>Football Teams</title>
-	<style type="text/css">
-		button, div, form, input {
-			margin: 10px;
-		}
-	</style>
+    <title>Football Teams</title>
 </head>
+
 <body>
-
-<div class="container">
-  <h1>Football Teams</h1>
-
-  <!-- Rendered Buttons will get Dumped Here  -->
-  <div id="buttonsView"></div>
-
-  <form id="movie-form">
-    <label for="movie-input">Add a Movie Bro</label>
-    <input type="text" id="movie-input"><br>
+ <!-- Rendered Buttons will get Dumped Here  -->
+    <div id="buttonsView">
+       <!--  <button style="color:red">sunshine</button> -->
+       <!--  below is the element tag that will be dynamically created when the renderButtons function is selected. 
+            <button class="chosenTeam" data-team=selectedTeam>a.text</button> -->
+        <!-- <button data-team="selectedTeam">Atlanta Hawks</button>  -->
+    </div>
     
-    <!-- Button triggers new movie to be added -->
-    <input id="addTeam" type="submit" value="Add a Team">
-  </form>
+ <!--    <div id="buttonsOrig">
+        <button data-team="Atlanta Hawks">Atlanta Hawks</button>
+        <button data-team="Denver Broncos">Denver Broncos</button>
+        <button data-team="Cleveland Browns">Cleveland Browns</button>
+        <button data-team="Detroit Lions">Detroit Lions</button     
+    </div> -->
+
+    <div id="displayGIF">
+    </div>
+
+<br>
+
+    <div>
+        <form id="team-form">
+            <input type="submit" id="loadTeams" value="Load theTeams">           
+        </form>
+    </div>
 
 
-  <!-- Movies will Get Dumped Dere -->
-  <div id="moviesView"></div>
-  
+    <div>
+        <form id="team-form">
+            <label for="team-input">Add Team </label>
+            <input type="text" id="team-input"><br>
+            <input type="submit" id="addTeam" value="Add a Team">           
+            <!-- Button triggers new team to be added -->
+            <!-- -->
+        </form>
+    </div>
+
 
 
 <script src='http://code.jquery.com/jquery-2.1.3.min.js'></script>
 <script type="text/javascript">
 
-	// Initial array of movies
-	var teamsArray = ['The Matrix', 'The Notebook2', 'Mr. Nobody', 'The Lion King'];
-
-	// ========================================================
-
-	// displayMovieInfo function now re-renders the HTML to display the appropriate content. 
-	function displayMovieInfo(){
-
-		var team = $(this).attr('data-name');
-	
-		console.log(team);
-		
-		//var queryURL = "http://www.omdbapi.com/?t=" + team + "&y=&plot=short&r=json";
-		var APIKey = "dc6zaTOxFJmzC"
-		var queryURL = "http://api.giphy.com/v1/gifs/search?q=" + team + "&api_key="+ APIKey;
-	//	http://api.giphy.com/v1/gifs/search?q=funny+cat&api_key=dc6zaTOxFJmzC
-		
-		// Creates AJAX call for the specific movie being 
-		$.ajax({url: queryURL, method: 'GET'})
-
-		.done(function(response) {
-
-			//for (var i = 0; i < results.length; i++) {
-			var results = response.data;
-			$("#moviesView").append("<div>Movie : " + team + "</div>");
-			console.log(results.rating);
-
-			console.log(results.username);
-			$("#moviesView").append("<div>Rating is : " + results.rating + "</div>");
-			//$("#moviesView").append("<div>image : " + response.images.fixed_height.url + "</div>");
-			
- 			//animalImage.attr("src", results[i].images.fixed_height.url);
-			console.log(results	);
-
-			// Creates a generic div to hold the movie
-
-			// Retrieves the Rating Data
-
-			// Creates an element to have the rating displayed
-
-			// Displays the rrating
-
-			// Retrieves the release year
-
-			// Creates an element to hold the release year
-
-			// Displays the release year
-
-			// Retrieves the plot
-
-			// Creates an element to hold the plot
-
-			// Appends the plot
-
-			// Creates an element to hold the image 
-
-			// Appends the image
-
-			// Puts the entire Movie above the previous movies.
-		});
-
-	}
+//document.load()
 
 
-	// ========================================================
-
-	// Generic function for displaying movie data 
-	function renderButtons(){ 
-
-		// Deletes the movies prior to adding new movies (this is necessary otherwise you will have repeat buttons)
-		$('#buttonsView').empty();
-
-		// Loops through the array of movies
-		for (var i = 0; i < teamsArray.length; i++){
-
-			// Then dynamicaly generates buttons for each movie in the array
-
-			// Note the jQUery syntax here... 
-		    var a = $('<button>') // This code $('<button>') is all jQuery needs to create the beginning and end tag. (<button></button>)
-		    a.addClass('team'); // Added a class 
-		    a.attr('data-name', teamsArray[i]); // Added a data-attribute
-		    a.text(teamsArray[i]); // Provided the initial button text
-		    $('#buttonsView').append(a); // Added the button to the HTML
-		}
-	}
-
-	// ========================================================
-
-	// This function handles events where one button is clicked
-	$('#addTeam').on('click', function(){
-
-		// This line of code will grab the input from the textbox
-		var team = $('#movie-input').val().trim();
-
-		// The movie from the textbox is then added to our array
-		teamsArray.push(team);
-		
-		// Our array then runs which handles the processing of our movie array
-		renderButtons();
-
-		// We have this line so that users can hit "enter" instead of clicking on ht button and it won't move to the next page
-		return false;
-	})
-
-	// ========================================================
-
-	// Generic function for displaying the movieInfo
-	$(document).on('click', '.team', displayMovieInfo);
+//Declare global variables
+        var teamsArray = ["Atlanta Falcons", "Denver Broncos", "Cleveland Browns", "Detroit Lions"];
+ 
 
 
-	// ========================================================
+    $('#buttonsView').on('click', 'button', function() {
+//debugger;
+        //alert("Button clicked");
+        // console.log("inside the button click");
+        //var selectedTeam = "philadelphia eagles";
+        //console.log(this);
+        
+        var selectedDataTeam = $(this).data('team');
+        var selectedTeam = $(this).text();
+        console.log("selectedTeam = " + selectedTeam);
+        var APIKey = "dc6zaTOxFJmzC";
+        var imageLimit = 3;
+        var imageRating = "pg";
+        var queryURL = "http://api.giphy.com/v1/gifs/search?q=" + selectedTeam + "&api_key="+ APIKey + "&limit=" + imageLimit + "&rating=" + imageRating;
+        console.log(queryURL);
 
-	// This calls the renderButtons() function
-	renderButtons();
+        $.ajax({
+                url: queryURL,
+                method: 'GET'
+            })
+            .done(function(response) {
+                var results = response.data;
+                console.log(results);
+                for (var i = 0; i < results.length; i++) {
+                    //alert("inside button click response");
+                    var gifDiv = $('<div class="item">')   //create a div with an item class and store it in a variable called gifDiv.
 
+                    var resultsReturned = results[i].images;
+                    var rating = results[i].rating;
+
+                    var p = $('<p>').text("Rating: " + rating);
+
+                    var teamImage = $('<img>');
+                    var thePicture = results[i].images.fixed_height.url;
+                    //var thePicture = results[i].images.fixed_height) + ".url";
+                    var imgMovement = "";
+                    var imgNoMovement = "still";
+                    var imageString = thePicture + imgNoMovement + ".url";
+                    console.log(imageString);
+                    teamImage.attr('src', thePicture);
+                    teamImage.attr('data-picture', thePicture);
+                    
+                    
+                    gifDiv.append(p);
+                    gifDiv.append(teamImage);
+
+                    $('#displayGIF').prepend(gifDiv);  //add the new div 
+
+
+                    // console.log("What is this : " + $(this));
+                    // console.log("What is thePicture : " + thePicture);
+
+                        $('#displayGIF').on('click','img', function(thePicture) {
+                            var selectedPicture = $(this).data('picture');
+                            var pictureMoving = thePicture;
+                            var pictureStill = resultsReturned.fixed_height_still.url;
+                            console.log("SelectedPicture : " + selectedPicture);
+                            console.log("What is this now: " + $(this));
+                            //alert("you are here");
+                                
+                             if (selectedPicture.includes("still")) {
+                                    //alert("the picture is still");
+                                    selectedPicture = pictureMoving;
+                                }
+                                else {
+                                    //alert("picture is moving");
+                                    thePicture = pictureStill;
+                            };
+
+                    });
+                }
+            });
+    });
+
+
+    $('#addTeam').on('click', function(){
+
+        // This line of code will grab the input from the textbox
+        var teamValue = $('#team-input').val().trim();
+
+        if (teamValue != ""){            
+        // The team from the textbox is then added to our array
+        teamsArray.push(teamValue);
+        //console.log(teamsArray);
+        
+        // Our renderbuttons function is called which creates the buttons based on the current values found in the teamsArray
+        renderButtons();
+
+        // We have this line so that users can hit "enter" instead of clicking on the button and it won't move to the next page
+        return false;}
+
+    });
+
+        function renderButtons(){ 
+//debugger;
+        // Deletes the teams prior to adding new teams (this is necessary otherwise you will have repeat buttons)
+        $('#buttonsView').empty();
+        // Loops through the teams array
+        for (var i = 0; i < teamsArray.length; i++){
+
+            // Then dynamicaly generates buttons for each team in the array
+
+            // Note the jQUery syntax here... 
+            var a = $('<button>') // This code $('<button>') is all jQuery needs to create  the beginning and end tag. (<button></button>)
+             //var a = $("<input type='button'/>")
+            // console.log("button " + i + " was created");
+            // //aValue = a.getElementById.html;
+            // console.log("var a = " + a);
+            // console.log("TeamsArray = " + teamsArray[i]);
+            
+            a.addClass('chosenTeam'); // Added a class 
+           
+            dataAttrName = teamsArray[i];
+            // console.log("dataAttrName = " +dataAttrName);
+            a.attr('data-team', dataAttrName); // Added a data-attribute called team. 
+
+            a.attr('style', "color:green");
+            a.text(teamsArray[i]); // creates the text on the added button to =the value coming from the appropriate array. 
+            $('#buttonsView').append(a); // Adds the button to the HTML - its green, has text, and its a button. 
+            clearText("team-input"); //Clear text box after the buttons have been rendered.
+        }
+    };
+
+
+ $('#loadTeams').on('click',  function() {
+    //$('#buttonsView').append(teamsArray);
+    renderButtons();
+    return false;
+});
+
+    function clearText(str){    
+    document.getElementById(str).value= "";
+    }
 
 </script>
-
-
 </body>
+
 </html>
